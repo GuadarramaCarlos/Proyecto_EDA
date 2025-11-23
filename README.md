@@ -5,6 +5,7 @@
 
 ## Integrantes  
 - **Carlos Alberto Guadarrama Dávila**
+- **Ortega Ortega Genaro Raziel**
 
 ---
 
