@@ -1,72 +1,137 @@
-# Sistema de Construcción de Grafos y Búsqueda de Caminos con Dijkstra
-
-Este proyecto implementa un conjunto de funciones para:
-
-1. **Construir grafos basados en similitudes**  
-   - Entre libros, a partir de usuarios que los han calificado.  
-   - Entre usuarios, a partir de los libros que ambos han calificado.
-
-2. **Calcular rutas más cortas** mediante el **algoritmo de Dijkstra**.
-
-3. **Reconstruir el camino mínimo** desde un nodo de inicio hasta un destino.
-
-Además, se incluye un archivo separado con **pruebas unitarias (pytest)** para validar el funcionamiento del código original.
+# Módulo 7: Grafos Ponderados  
+**Proyecto Final — Estructuras de Datos Avanzadas I (2026-1)**
 
 ---
 
-## Contenido del proyecto
+## Integrantes  
+- **Carlos Alberto Guadarrama Dávila**
 
-### 1. `original.py`
-Contiene las siguientes funciones principales:
+---
 
-### **a) construir_grafo_libro_libro(mapa_libro_usuarios, m_minimo)**
-Construye un grafo donde:
-- Cada nodo es un **libro (ISBN)**.
-- Se crea una arista entre dos libros si **comparten al menos `m_minimo` usuarios**.
-- El peso entre dos libros se calcula como:
+## Objetivo del módulo  
+Construir grafos ponderados a partir de datos de usuarios y libros, y aplicar el **algoritmo de Dijkstra** para obtener caminos mínimos entre nodos seleccionados.  
+El módulo genera grafos basados en similitud y analiza relaciones entre entidades mediante distancias inversamente proporcionales al nivel de coincidencia.
+
+---
+
+## Estructuras de datos y algoritmos implementados
+
+### 1. **Grafo ponderado (diccionarios de adyacencia)**  
+Los grafos se representan como:
+
+grafo = {
+    nodo1: { vecino1: peso1, vecino2: peso2, ... },
+    nodo2: { vecino1: peso1, vecino3: peso3, ... },
+    ...
+}
+
+
+
+### 2. Construcción del grafo Libro–Libro
+Dos libros se conectan si al menos **m** usuarios calificaron ambos.
+
+**Peso utilizado:**
 
 \[
 d = \frac{1}{1 + w}
 \]
 
-donde `w` es la cantidad de usuarios en común.
+- **w:** usuarios en común  
+- **d:** distancia (menor = más similares)
 
-Es útil para sistemas de recomendación basados en similitud de usuarios.
+**Ejemplo:**
+
+b1 → [u1, u2, u5, u7]
+b2 → [u2, u3, u5]
+
+w = 2
+d = 1 / (1 + 2) = 0.333
+
 
 ---
 
-### **b) construir_grafo_libro(mapa_usuario_libros, m_minimo)**
-Construye un grafo donde:
-- Cada nodo es un **usuario**.
-- Dos usuarios se conectan cuando **comparten al menos `m_minimo` libros**.
-- El peso se calcula igual que en la función anterior.
+### 4. Algoritmo de Dijkstra
+Implementado mediante un **min-heap**.
 
-Permite modelar similitudes entre usuarios según sus gustos.
-
----
-
-### **c) dijkstra(grafo, inicio)**
-Implementa el **algoritmo de Dijkstra** usando una **cola de prioridad (heap)**.
-
-Retorna:
-- `distancia`: tabla con la distancia mínima desde el nodo inicio hacia todos los demás.
-- `previo`: diccionario para reconstruir caminos.
+| Elemento | Complejidad |
+|---------|-------------|
+| Extracción del heap | O(log V) |
+| Relajación de aristas | O(E log V) |
+| **Total** | **O((V + E) log V)** |
 
 ---
 
-### **d) reconstruir(previo, destino)**
-Reconstruye la **ruta mínima** obtenida por Dijkstra desde el nodo de inicio hasta el nodo final.
+## Complejidad del módulo
+
+### Construcción de grafos Libro–Libro / Usuario–Usuario
+
+Comparación entre todos los pares:
+
+\[
+O(n^2 \cdot c)
+\]
+
+Donde:  
+- **n:** número de libros o usuarios  
+- **c:** costo de calcular intersección  
+
+Con filtros (ej. 1000 elementos), el rendimiento es adecuado.
+## Entradas y salidas
+
+### Entradas
+- Mapa libro–usuarios o usuario–libros desde:
+  - Archivos `.csv`
+  - Archivos `.pkl`
+- `m_minimo`: coincidencias mínimas  
+- Nodo inicial para Dijkstra  
+
+### Salidas
+- Grafos `.pkl`
+- Mensajes en terminal indicando:
+  - Caminos mínimos
+  - Pesos acumulados
+  - Tiempo de ejecución
+  - Número de nodos y aristas  
+  - Archivos generados  
+  - Log JSON por línea en `logs.log`  
+
+**Ejemplo de log:**
+{
+  "timestamp": "2025-10-29T18:45:10",
+  "module": "graph_weighted",
+  "algorithm": "dijkstra",
+  "records": 1000,
+  "time": 0.87,
+  "memory": "14MB"
+}
+
+---
+## Descripción de funciones
+
+### 1. `construir_grafo_libro_libro(mapa_libro_usuarios, m_minimo)`
+Genera el grafo Libro–Libro.
+
+### 2. `construir_grafo_usuario_usuario(mapa_usuario_libros, m_minimo)`
+Genera el grafo Usuario–Usuario.
+
+### 3. `dijkstra(grafo, inicio)`
+Devuelve distancias y predecesores.
+
+### 4. `reconstruir(previo, destino)`
+Reconstruye la ruta mínima.
 
 ---
 
-## 2. `test_codigo_original.py`
-Archivo de pruebas unitarias que verifica:
+## Reflexión
+El módulo identifica similitudes mediante distancias inversas a coincidencias.  
+Dijkstra con min-heap permite buen rendimiento incluso con grafos medianos.  
+Los caminos obtenidos reflejan relaciones reales en los datos.
 
-- Construcción correcta de grafos de libros.
-- Construcción correcta de grafos de usuarios.
-- Funcionamiento del algoritmo de Dijkstra.
-- Reconstrucción correcta del camino mínimo.
+---
 
-Se ejecuta con:
-
-
+## Conclusiones
+- Los grafos ponderados representan similitudes de forma efectiva.  
+- La distancia \(1 / (1 + w)\) es intuitiva y útil.  
+- Dijkstra es adecuado para grafos no dirigidos con pesos positivos.  
+- El módulo cumple con los requerimientos de construcción, análisis y logging.  
+- Es una base sólida para futuros módulos de recomendación o visualización.
