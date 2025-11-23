@@ -32,9 +32,8 @@ Dos libros se conectan si al menos **m** usuarios calificaron ambos.
 
 **Peso utilizado:**
 
-\[
-d = \frac{1}{1 + w}
-\]
+d = 1/(1 + w)
+
 
 - **w:** usuarios en común  
 - **d:** distancia (menor = más similares)
@@ -67,9 +66,7 @@ Implementado mediante un **min-heap**.
 
 Comparación entre todos los pares:
 
-\[
-O(n^2 \cdot c)
-\]
+O(n^2)
 
 Donde:  
 - **n:** número de libros o usuarios  
