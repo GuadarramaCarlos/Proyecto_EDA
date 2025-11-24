@@ -6,6 +6,7 @@
 ## Integrantes  
 - **Carlos Alberto Guadarrama Dávila**
 - **Ortega Ortega Genaro Raziel**
+- **Antunez Jimenez Fredy Noel**
 
 ---
 
