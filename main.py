@@ -133,7 +133,7 @@ def main():
         
         # Asserts
         assert isinstance(grafo, dict), "ERROR: El grafo no es un diccionario."
-        assert len(grafo) > 0, "ERROR: El grafo está vacío."
+        assert len(grafo) > 0, "ERROR: El grafo esta vacio."
         assert elementos_base > 0, "ERROR: No hay elementos base para construir el grafo."
         #Guardar archivos y logs
         guardar_pkl(grafo, archivo_salida)
