@@ -151,7 +151,7 @@ def main():
                 "time": round(tiempo_total, 4),
                 "memory": f"{memoria_usada_mb()} MB"
             }
-            print("\nResumen final de ejecución:")
+            print("\nResumen final de ejecucion:")
             print(json.dumps(summary, indent=2))
 
 if __name__ == "__main__":
